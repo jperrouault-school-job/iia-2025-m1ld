@@ -1,6 +1,8 @@
 package fr.formation.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,10 +22,16 @@ public class HelloApiController {
         return "Hello " + username;
     }
 
-    // Data Binding
+    // Data Binding avec paramètres de requête
     @GetMapping("/hello")
     public HelloRequest hello(HelloRequest request) {
         return request;
         // return "Hello " + request.getUsername();
+    }
+    
+    // Data Binding avec corps de requête
+    @PostMapping("/hello")
+    public String helloPost(@RequestBody HelloRequest request) {
+        return "Hello " + request.getUsername();
     }
 }
