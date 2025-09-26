@@ -3,8 +3,12 @@ package fr.formation.api;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.formation.api.request.CreateCommandeDetailRequest;
 import fr.formation.api.request.CreateCommandeRequest;
+import fr.formation.api.response.CommandeByProduitIdResponse;
 import fr.formation.exception.ProduitNotFoundException;
 import fr.formation.model.Client;
 import fr.formation.model.Commande;
@@ -33,6 +38,20 @@ public class CommandeApiController {
     // private final CommandeDetailRepository commandeDetailRepository;
     private final ClientRepository clientRepository;
     private final ProduitRepository produitRepository;
+
+    @GetMapping("/by-produit/{produitId}")
+    public List<?> findByProduitId(@PathVariable String produitId) {
+        return this.repository.findAllByDetailsProduitId(produitId).stream()
+            .map(c -> {
+                CommandeByProduitIdResponse resp = new CommandeByProduitIdResponse();
+
+                BeanUtils.copyProperties(c, resp);
+
+                return resp;
+            })
+            .toList()
+        ;
+    }
 
     // @PostMapping
     // @ResponseStatus(code = HttpStatus.CREATED)
