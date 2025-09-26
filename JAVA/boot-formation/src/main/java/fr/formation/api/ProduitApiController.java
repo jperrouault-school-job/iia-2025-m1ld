@@ -1,10 +1,6 @@
 package fr.formation.api;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -22,33 +18,18 @@ import fr.formation.api.request.CreateOrUpdateProduitRequest;
 import fr.formation.api.response.ProduitResponse;
 import fr.formation.exception.ProduitNotFoundException;
 import fr.formation.model.Produit;
+import fr.formation.repo.ProduitRepository;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/produit")
+@RequiredArgsConstructor
 public class ProduitApiController {
-    private List<Produit> produits = new ArrayList<>();
-
-    public ProduitApiController() {
-        produits.add(Produit.builder()
-            .id("abc")
-            .name("Parachute")
-            .price(new BigDecimal("4999.85"))
-            .date(LocalDate.of(2025, 1, 15))
-            .build())
-        ;
-
-        produits.add(Produit.builder()
-            .id("def")
-            .name("Moto")
-            .price(new BigDecimal("14999"))
-            .date(LocalDate.now())
-            .build())
-        ;
-    }
+    private final ProduitRepository repository;
 
     @GetMapping
     public List<ProduitResponse> findAll() {
-        return this.produits.stream()
+        return this.repository.findAll().stream()
             .map(p -> {
                 // return ProduitResponse.builder()
                 //     .id(p.getId())
@@ -75,29 +56,24 @@ public class ProduitApiController {
 
         BeanUtils.copyProperties(request, produit);
 
-        produit.setId(UUID.randomUUID().toString());
-
-        this.produits.add(produit);
+        this.repository.save(produit);
 
         return produit.getId();
     }
 
     @PutMapping("/{id}")
     public String updateById(@PathVariable String id, @RequestBody CreateOrUpdateProduitRequest request) {
-        Produit produit = this.produits.stream()
-            .filter(p -> p.getId().equals(id))
-            .findFirst()
-            .orElseThrow(ProduitNotFoundException::new);
-        ;
+        Produit produit = this.repository.findById(id).orElseThrow(ProduitNotFoundException::new);
 
         BeanUtils.copyProperties(request, produit);
-        produit.setId(id);
 
         return id;
     }
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id) {
-        this.produits.removeIf(p -> p.getId().equals(id));
+        if (this.repository.existsById(id)) { // Pas obligé
+            this.repository.deleteById(id);
+        }
     }
 }
