@@ -18,6 +18,12 @@ public class ProduitApiController {
 
     @GetMapping
     public List<Produit> findAll() {
-        return this.produitRepository.findAll();
+        List<Produit> produits = this.produitRepository.findAll();
+
+        produits.forEach(p -> {
+            System.out.println(p.getFournisseur().getId());
+        });
+
+        return produits;
     }
 }
