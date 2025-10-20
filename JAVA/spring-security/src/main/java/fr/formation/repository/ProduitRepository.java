@@ -1,5 +1,6 @@
 package fr.formation.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,4 +19,9 @@ public interface ProduitRepository extends JpaRepository<Produit, String> {
 
     @Query("select p from Produit p where p.name = ?1 order by p.id asc")
     public Optional<Produit> findByQueryName(String name);
+
+    public List<Produit> findAllByPriceBetween(BigDecimal priceA, BigDecimal priceB);
+
+    @Query("select p from Produit p where p.price between ?1 and ?2")
+    public List<Produit> findAllByPriceBetweenWithQuery(BigDecimal priceA, BigDecimal priceB);
 }

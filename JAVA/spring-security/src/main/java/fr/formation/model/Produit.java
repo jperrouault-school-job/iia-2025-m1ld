@@ -1,5 +1,7 @@
 package fr.formation.model;
 
+import java.math.BigDecimal;
+
 import org.hibernate.annotations.UuidGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,9 +24,11 @@ public class Produit {
     @UuidGenerator
     @Column(name = "pro_id", length = 40, nullable = false)
     private String id;
-    
+
     @Column(name = "pro_name", length = 75, nullable = false)
     private String name;
+
+    private BigDecimal price;
 
     // ToOne, la stratégie de chargment par défaut = EAGER
     @ManyToOne(fetch = FetchType.LAZY)

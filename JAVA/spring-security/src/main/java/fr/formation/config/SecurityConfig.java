@@ -3,6 +3,7 @@ package fr.formation.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, DemoFilter demoFilter) throws Exception {
@@ -20,7 +22,7 @@ public class SecurityConfig {
         // Configuration des accès
         http.authorizeHttpRequests(authorize -> {
             // authorize.requestMatchers("/api/produit").hasRole("ADMIN");
-            authorize.requestMatchers("/api/produit").hasAuthority("ROLE_ADMIN");
+            // authorize.requestMatchers("/api/produit").hasAuthority("ROLE_ADMIN");
 
             authorize.requestMatchers("**").authenticated();
         });
@@ -30,6 +32,9 @@ public class SecurityConfig {
 
         // Authentification par Http Basic
         http.httpBasic(Customizer.withDefaults());
+
+        // http.csrf(csrf -> csrf.disable());
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**").disable());
 
         http.addFilterBefore(demoFilter, UsernamePasswordAuthenticationFilter.class);
 
