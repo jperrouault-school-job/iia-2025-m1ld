@@ -10,11 +10,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http, DemoFilter demoFilter) throws Exception {
 
         // Configuration des accès
         http.authorizeHttpRequests(authorize -> {
@@ -29,6 +30,8 @@ public class SecurityConfig {
 
         // Authentification par Http Basic
         http.httpBasic(Customizer.withDefaults());
+
+        http.addFilterBefore(demoFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
