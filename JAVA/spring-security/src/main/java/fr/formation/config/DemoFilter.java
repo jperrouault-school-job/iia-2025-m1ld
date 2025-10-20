@@ -21,15 +21,15 @@ public class DemoFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
-        System.out.println(authHeader);
+        if ("admin".equals(authHeader)) {
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                "username",
+                null, // password
+                List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))
+            );
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-            "username",
-            null, // password
-            List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
 
         filterChain.doFilter(request, response);
     }
