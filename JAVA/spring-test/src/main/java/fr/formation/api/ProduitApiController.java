@@ -23,6 +23,7 @@ import fr.formation.api.response.ProduitResponse;
 import fr.formation.exception.ProduitNotFoundException;
 import fr.formation.model.Produit;
 import fr.formation.repository.ProduitRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/produit")
@@ -69,7 +70,7 @@ public class ProduitApiController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public String create(@RequestBody CreateOrUpdateProduitRequest request) {
+    public String create(@Valid @RequestBody CreateOrUpdateProduitRequest request) {
         Produit produit = new Produit();
 
         BeanUtils.copyProperties(request, produit);
