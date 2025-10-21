@@ -71,7 +71,7 @@ public class ProduitRepositoryTest {
     }
 
     @Test
-    void shouldFindByPriceBetweenOk() {
+    void shouldFindByPriceBetweenReturnOneWhen400And600() {
         // given
 
         // when
@@ -81,5 +81,22 @@ public class ProduitRepositoryTest {
 
         // then
         Assertions.assertEquals(1, result.size());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "400,600,1",
+        "4000,6000,1",
+        "400,6000,2",
+        "200,300,0"
+    })
+    void shouldFindByPriceBetweenOk(BigDecimal from, BigDecimal to, int size) {
+        // given
+
+        // when
+        List<Produit> result = this.repository.findAllByPriceBetween(from, to);
+
+        // then
+        Assertions.assertEquals(size, result.size());
     }
 }
