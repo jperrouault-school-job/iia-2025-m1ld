@@ -1,5 +1,6 @@
 package fr.formation.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +13,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.formation.exception.HelloException;
+import fr.formation.repository.ProduitRepository;
 
 // @Controller
 // @ResponseBody
 @RestController
 @RequestMapping("/hello") // Préfixer tous les mappings de la classe
 public class HelloApiController {
-    
+    @Autowired
+    private ProduitRepository produitRepository;
+
     // @RequestMapping(path = "/", method = RequestMethod.GET)
     @GetMapping("/demo")
     public String hello(@RequestParam String username, @RequestParam(required = false) Integer age) {
@@ -26,6 +30,8 @@ public class HelloApiController {
 
         request.setUsername(username);
         request.setAge(age);
+
+        this.produitRepository.findAll();
 
         return "Hello " + username;
     }
@@ -36,7 +42,7 @@ public class HelloApiController {
         return request;
         // return "Hello " + request.getUsername();
     }
-    
+
     // Data Binding avec corps de requête
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)

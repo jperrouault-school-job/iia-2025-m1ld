@@ -24,6 +24,7 @@ public class SecurityConfig {
             // authorize.requestMatchers("/api/produit").hasRole("ADMIN");
             // authorize.requestMatchers("/api/produit").hasAuthority("ROLE_ADMIN");
 
+            // authorize.requestMatchers("/hello/demo").permitAll();
             authorize.requestMatchers("**").authenticated();
         });
 
