@@ -1,0 +1,1 @@
+DELETE FROM produit WHERE pro_id = 'id3';
