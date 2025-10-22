@@ -4,6 +4,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +13,11 @@ import lombok.Setter;
 @Table(name = "[user]")
 @Getter @Setter
 public class Utilisateur {
+    @Id
     @UuidGenerator
     @Column(name = "usr_id")
     private String id;
-    
+
     @Column(name = "usr_username", length = 50, nullable = false)
     private String username;
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import fr.formation.exception.EntityNotDeletedException;
@@ -17,6 +18,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 
+@Service
 @Validated
 @RequiredArgsConstructor
 public class FournisseurService {

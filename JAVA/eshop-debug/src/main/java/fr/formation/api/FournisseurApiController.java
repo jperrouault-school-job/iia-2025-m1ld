@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import fr.formation.model.Fournisseur;
 import fr.formation.repo.FournisseurRepository;
@@ -16,10 +17,11 @@ import fr.formation.request.CreateFournisseurRequest;
 import fr.formation.response.FournisseurResponse;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api/founisseur")
+@RestController
+@RequestMapping("/api/fournisseur")
 @RequiredArgsConstructor
 public class FournisseurApiController {
-    private FournisseurRepository repository;
+    private final FournisseurRepository repository;
 
     @GetMapping
     public List<FournisseurResponse> findAll() {
@@ -35,7 +37,7 @@ public class FournisseurApiController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIM')")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public FournisseurResponse create(@RequestBody CreateFournisseurRequest request) {
         Fournisseur fournisseur = new Fournisseur();

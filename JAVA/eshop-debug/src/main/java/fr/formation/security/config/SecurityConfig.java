@@ -34,7 +34,7 @@ public class SecurityConfig {
 
         // On désactive les Cookies
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        
+
         http.addFilterBefore(jwtHeaderFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.cors(Customizer.withDefaults());
@@ -61,6 +61,7 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
+    @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

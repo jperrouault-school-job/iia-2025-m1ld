@@ -20,11 +20,13 @@ public class UtilisateurApiController {
     private final UtilisateurRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    @PostMapping("/subcsribe")
+    @PostMapping("/subscribe")
     public String subscribe(@Valid @RequestBody SubscriptionRequest request) {
         Utilisateur utilisateur = new Utilisateur();
 
         BeanUtils.copyProperties(request, utilisateur);
+
+        utilisateur.setPassword(this.passwordEncoder.encode(request.getPassword()));
 
         this.repository.save(utilisateur);
 

@@ -37,13 +37,13 @@ public class ProduitService {
     public Produit findByNom(@Valid @NotBlank String nom) {
         return this.repository.findByNom(nom).orElseThrow(EntityNotFoundException::new);
     }
-    
+
     public Produit save(@Nullable Integer id, @Valid CreateOrUpdateProduitRequest produitRequest) {
         Produit produit = (id != null) ? this.findById(id) : new Produit();
 
         produit.setNom(produitRequest.getNom());
         produit.setPrix(produitRequest.getPrix());
-        
+
         if (produitRequest.getFournisseurId() != null) {
             produit.setFournisseur(new Fournisseur());
             produit.getFournisseur().setId(produitRequest.getFournisseurId());

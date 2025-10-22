@@ -12,5 +12,5 @@ public interface ProduitRepository extends JpaRepository<Produit, Integer> {
     @Query("select p from Produit p where p.nom = ?1")
     public Optional<Produit> findByNom(String nom);
 
-    public List<Produit> findByPriceBetween(float start, float end);
+    public List<Produit> findByPrixBetween(float start, float end);
 }

@@ -18,20 +18,20 @@ import fr.formation.model.Produit;
 class ProduitRepositoryTest {
     @Autowired
     private ProduitRepository repository;
-    
+
     @Test
     void testFindAll() {
         // given
 
         // when
         List<Produit> produits = this.repository.findAll();
-        
+
         // then
         Assertions.assertNotNull(produits);
         Assertions.assertTrue(produits.size() > 0);
         Assertions.assertEquals(1, produits.get(0).getId());
     }
-    
+
     @Test
     void testFindById() {
         // given
@@ -44,7 +44,7 @@ class ProduitRepositoryTest {
         Assertions.assertTrue(produit.isPresent());
         Assertions.assertEquals(1, produit.get().getId());
     }
-    
+
     @Test
     void testFindByNom() {
         // given
@@ -57,28 +57,28 @@ class ProduitRepositoryTest {
         Assertions.assertTrue(optProduit.isPresent());
         Assertions.assertEquals(2, optProduit.get().getId());
     }
-    
+
     @Test
     void testFindByPrixBetween() {
         // given
 
         // when
-        List<Produit> produits = this.repository.findByPriceBetween(50, 250);
+        List<Produit> produits = this.repository.findByPrixBetween(50, 250);
 
         // then
         Assertions.assertNotNull(produits);
         Assertions.assertEquals(2, produits.size());
         Assertions.assertEquals(1, produits.get(0).getId());
     }
-    
+
     @Test
     void shouldAdd() {
         // given
         Produit produit = generateProduit();
         String produitNom = produit.getNom();
-        
+
         Assertions.assertEquals(0, produit.getId());
-        
+
         // when
         this.repository.save(produit);
 
@@ -88,23 +88,23 @@ class ProduitRepositoryTest {
         produit = this.repository.findById(produit.getId()).get();
         Assertions.assertEquals(produitNom, produit.getNom());
     }
-    
+
     @Test
     void shouldUpdate() {
         // given
         Produit produit = this.repository.findById(1).get();
         String produitNom = produit.getNom();
-        
+
         produit.setNom("new nom");
-        
+
         // when
         this.repository.save(produit);
         produit = this.repository.findById(1).get();
-        
+
         // then
         Assertions.assertNotEquals(produitNom, produit.getNom());
     }
-    
+
     @Test
     void shouldDelete() {
         // given
@@ -117,17 +117,17 @@ class ProduitRepositoryTest {
         Assertions.assertNotNull(produit);
         Assertions.assertTrue(produit.isEmpty());
     }
-    
+
     private static Produit generateProduit() {
         Produit produit = new Produit();
-        
+
         generateDataForProduit(produit);
         return produit;
     }
-    
+
     private static void generateDataForProduit(Produit produit) {
         Random r = new Random();
-        
+
         produit.setNom(UUID.randomUUID().toString());
         produit.setFournisseur(new Fournisseur());
         produit.getFournisseur().setId(1);
